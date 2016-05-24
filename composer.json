@@ -1,26 +1,36 @@
 {
-  "name" : "tekkla/core-config",
-  "description" : "Simple and flexible configmanager with default file and db (PDO) repository support.",
-  "require" : {
-    "php" : ">=7.0.0",
-    "tekkla/core-storage" : ">=1.0.0"
-  },
-  "repositories" : [ {
-    "type" : "composer",
-    "url" : "https://packagist.org/"
-  } ],
-  "license" : "MIT",
-  "keywords" : [ "config", "manager", "oop", "pdo", "file" ],
-  "autoload" : {
-    "psr-0" : {
-      "Core\\Config" : ""
-    }
-  },
-  "type" : "library",
-  "homepage" : "https://github.com/Tekkla/core-config",
-  "authors" : [ {
-    "name" : "Michael Zorn",
-    "email" : "tekkla@tekkla.de",
-    "role" : "Developer"
-  } ]
+    "name": "tekkla/core-config",
+    "description": "Simple and flexible configmanager with default file and db (PDO) repository support.",
+    "require": {
+        "php": ">=7.0.0",
+        "tekkla/core-storage": ">=1.0.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.org/"
+        }
+    ],
+    "license": "MIT",
+    "keywords": [
+        "config",
+        "manager",
+        "oop",
+        "pdo",
+        "file"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Core\\Config": ""
+        }
+    },
+    "type": "library",
+    "homepage": "https://github.com/Tekkla/core-config",
+    "authors": [
+        {
+            "name": "Michael Zorn",
+            "email": "tekkla@tekkla.de",
+            "role": "Developer"
+        }
+    ]
 }
