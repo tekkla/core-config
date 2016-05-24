@@ -1,24 +1,26 @@
 {
-  "name" : "tekkla/core-config",
-  "description" : "Simple and flexible configmanager with default file and db (PDO) repository support.",
-  "license": "MIT",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/tekkla/core-storage"
-    }
-  ],
-  "require" : {
-    "php" : ">=7.0.0",
-    "tekkla/core-storage": "dev-master"
-  },
-  "autoload" : {
-    "psr-0" : {
-      "Core\\Config" : ""
-    }
-  },
-  "authors" : [ {
-    "name" : "Michael Zorn",
-    "email" : "tekkla@tekkla.de"
-  } ]
+    "name": "tekkla/core-config",
+    "description": "Simple and flexible configmanager with default file and db (PDO) repository support.",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tekkla/core-storage"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "tekkla/core-storage": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Core\\Config": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Michael Zorn",
+            "email": "tekkla@tekkla.de"
+        }
+    ]
 }
