@@ -10,7 +10,7 @@
   ],
   "require" : {
     "php" : ">=7.0.0",
-    "tekkla/core-storage": "dev-master"
+    "tekkla/core-storage": ""
   },
   "minimum-stability" : "dev",
   "autoload" : {
