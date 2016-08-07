@@ -2,7 +2,6 @@
 namespace Core\Config;
 
 use Core\Config\Repository\RepositoryInterface;
-use function Core\stringIsSerialized;
 
 /**
  * Config.php
@@ -62,6 +61,19 @@ final class Config implements ConfigInterface
     }
 
     /**
+     *
+     * @param string $storage_name
+     */
+    public function &getStorage(string $storage_name): ConfigStorage
+    {
+        if (!isset($this->storage[$storage_name])) {
+            $this->storage[$storage_name] = new ConfigStorage();
+        }
+
+        return $this->storage[$storage_name];
+    }
+
+    /**
      * Get a cfg value.
      *
      * @param string $app
@@ -71,7 +83,7 @@ final class Config implements ConfigInterface
      *
      * @return mixed
      */
-    public function get($storage_name, $key = null)
+    public function get(string $storage_name, string $key = '')
     {
         // Calls only with app name indicates, that the complete app config is requested
         if (empty($key) && !empty($this->storage[$storage_name])) {
@@ -99,9 +111,9 @@ final class Config implements ConfigInterface
      * @param string $key
      * @param mixed $val
      */
-    public function set($storage_name, $key, $val)
+    public function set(string $storage_name, string $key, $val)
     {
-        $this->storage[$storage_name]->{$key} = $val;
+        $this->storage[$storage_name]->set($key, $val);
     }
 
     /**
@@ -153,140 +165,7 @@ final class Config implements ConfigInterface
                 $this->storage[$storage] = new ConfigStorage();
             }
 
-            $this->storage[$storage]->{$id} = $value;
-        }
-    }
-
-    /**
-     * Adds file paths to a storage
-     *
-     * @param string $storage_name
-     * @param array $dirs
-     *
-     * @return \Core\Cfg\Cfg
-     */
-    public function addPaths($storage_name, array $dirs = [])
-    {
-        // Write dirs to config storage
-        foreach ($dirs as $key => $val) {
-            $this->storage[$storage_name]->{'dir.' . $key} = $val;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Adds urls to a storage
-     *
-     * @param string $storage_name
-     * @param array $urls
-     *
-     * @return \Core\Cfg\Cfg
-     */
-    public function addUrls($storage_name, array $urls = [])
-    {
-        // Write urls to config storage
-        foreach ($urls as $key => $val) {
-            $this->storage[$storage_name]->{'url.' . $key} = $val;
-        }
-    }
-
-    /**
-     * Adds an array of config definitions of a storage
-     *
-     * @param string $storage_name
-     *            The name storage this definitions are for
-     * @param array $definition
-     *            Array of definitions
-     */
-    public function addDefinition($storage_name, array $definition)
-    {
-        // Store flattened config. The flattening process also takes care of missing definition data
-        $this->definitions[$storage_name] = $definition;
-
-        // Check existing config for missing entries and set default values on empty config values
-        $this->checkDefaults($storage_name, $definition);
-    }
-
-    /**
-     * Sets config default values
-     *
-     * This method works recursive and checks the app given configstructure against the configdata loaded from db.
-     * It checks for serialize flags in config definition and deserializes the config value if needed.
-     * Fills the class structure property using the combined key as index and the controldefinition as data.
-     *
-     * @param string $storage_name
-     *            Name of the app this config belongs to.
-     * @param array $array
-     *            Array with groups and/or controls to check for cfg values and default value and serialize state.
-     * @param string $prefix
-     *            Prefix used to build config key. Will be the current prefix + glue + current key.
-     * @param string $glue
-     *            The glue which combines prefix and key.
-     */
-    private function checkDefaults($storage_name, array $definition, $prefix = '', $glue = '.')
-    {
-        // First step, check for controls
-        if (!empty($definition['controls'])) {
-
-            foreach ($definition['controls'] as $name => $control) {
-
-                // Create the config key using the prefix passed as argument and the name used as index
-                $key = (!empty($prefix) ? $prefix . $glue : '') . $name;
-
-                if (!isset($this->storage[$storage_name]->{$key}) && !empty($control['default'])) {
-                    $this->storage[$storage_name]->{$key} = $control['default'];
-                }
-
-                if (!empty($control['serialize']) && stringIsSerialized($this->storage[$storage_name]->{$key})) {
-                    $this->storage[$storage_name]->{$key} = unserialize($this->storage[$storage_name]->{$key});
-                }
-
-                $this->structure[$storage_name][$key] = $control;
-            }
-        }
-
-        // Do we have subgroups in this definition?
-        if (!empty($definition['groups'])) {
-            foreach ($definition['groups'] as $name => $group) {
-                $this->checkDefaults($storage_name, $group, (!empty($prefix) ? $prefix . $glue : '') . $name);
-            }
-        }
-    }
-
-    /**
-     * Cleans config table by deleting all config entries that do not exist in config definition anymore
-     *
-     * @return void
-     */
-    public function cleanConfig()
-    {
-
-        // Get name of all apps that have values in config table
-        $storage_names = array_keys($this->storage);
-
-        // Cleanup each apps config values in db
-        foreach ($storage_names as $storage_name) {
-
-            // Get all obsolete config keys
-            $obsolete = array_diff(array_keys($this->storage[$storage_name]), array_keys($this->definitions[$storage_name]));
-
-            // Create prepared IN statemen and
-            $prepared = $this->db->prepareArrayQuery('c', $obsolete);
-
-            $qb = [
-                'table' => 'core_configs',
-                'method' => 'DELETE',
-                'filter' => 'app=:app and cfg IN (' . $prepared['sql'] . ')',
-                'params' => [
-                    ':app' => $storage_name
-                ]
-            ];
-
-            // Prepared params to qb params
-            $qb['params'] += $prepared['params'];
-
-            $this->db->qb($qb, true);
+            $this->storage[$storage]->set($id, $value);
         }
     }
 
