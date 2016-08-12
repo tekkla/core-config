@@ -16,6 +16,12 @@ class ConfigStorage extends Storage
 
     /**
      *
+     * @var string
+     */
+    private $name;
+
+    /**
+     *
      * @var array
      */
     private $definition = [];
@@ -25,6 +31,26 @@ class ConfigStorage extends Storage
      * @var array
      */
     private $structure = [];
+
+    /**
+     * Sets the name of storage
+     *
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Returns set storage name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     /**
      *
@@ -38,7 +64,7 @@ class ConfigStorage extends Storage
             return $this->data[$key];
         }
 
-        Throw new ConfigException(sprintf('Config "%s" does not exists.', $key));
+        Throw new ConfigException(sprintf('Config "%s" does not exists in storage "%s"', $key, $this->name));
     }
 
     /**
@@ -133,10 +159,7 @@ class ConfigStorage extends Storage
                 $key = (!empty($prefix) ? $prefix . $glue : '') . $name;
 
                 $this->structure[$key] = $control;
-
-                if (!isset($this->data[$key]) && !empty($control['default'])) {
-                    $this->data[$key] = $control['default'];
-                }
+                $this->data[$key] = !isset($this->data[$key]) && !empty($control['default']) ? $control['default'] : null;
 
                 if (!empty($control['serialize'])) {
 
