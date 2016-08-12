@@ -61,13 +61,41 @@ final class Config implements ConfigInterface
     }
 
     /**
+     * Creates a named config storage object, adds it to the storages list and returns a reference to it.
      *
      * @param string $storage_name
+     *            Name of storage to create
+     *
+     * @throws ConfigException
+     *
+     * @return ConfigStorage
+     */
+    public function &createStorage(string $storage_name): ConfigStorage
+    {
+        if (isset($this->storage[$storage_name])) {
+            return $this->getStorage($storage_name);
+        }
+
+        $storage = new ConfigStorage();
+        $storage->setName($storage_name);
+
+        $this->storage[$storage_name] = $storage;
+
+        return $storage;
+    }
+
+    /**
+     * Requests a config storage by it's name and returns (if exists) a reference to it
+     *
+     * @param string $storage_name
+     *            Name of config storage
+     *
+     * @return ConfigStorage
      */
     public function &getStorage(string $storage_name): ConfigStorage
     {
         if (!isset($this->storage[$storage_name])) {
-            $this->storage[$storage_name] = new ConfigStorage();
+            Throw new ConfigException(sprintf('A config storage with name "%s" does not exists.', $storage_name));
         }
 
         return $this->storage[$storage_name];
@@ -156,16 +184,8 @@ final class Config implements ConfigInterface
 
         /* @var $config \Core\Config\ConfigObject */
         foreach ($results as $config) {
-
-            $storage = $config->getStorage();
-            $id = $config->getId();
-            $value = $config->getValue();
-
-            if (!isset($this->storage[$storage])) {
-                $this->storage[$storage] = new ConfigStorage();
-            }
-
-            $this->storage[$storage]->set($id, $value);
+            $storage = $this->getStorage($config->getStorage());
+            $storage->set($config->getId(), $config->getValue());
         }
     }
 
