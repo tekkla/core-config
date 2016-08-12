@@ -159,7 +159,10 @@ class ConfigStorage extends Storage
                 $key = (!empty($prefix) ? $prefix . $glue : '') . $name;
 
                 $this->structure[$key] = $control;
-                $this->data[$key] = !isset($this->data[$key]) && !empty($control['default']) ? $control['default'] : null;
+
+                if (!isset($this->data[$key])) {
+                    $this->data[$key] = !empty($control['default']) ? $control['default'] : null;
+                }
 
                 if (!empty($control['serialize'])) {
 
