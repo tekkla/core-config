@@ -184,7 +184,7 @@ final class Config implements ConfigInterface
 
         /* @var $config \Core\Config\ConfigObject */
         foreach ($results as $config) {
-            $storage = $this->getStorage($config->getStorage());
+            $storage = $this->createStorage($config->getStorage());
             $storage->set($config->getId(), $config->getValue());
         }
     }
