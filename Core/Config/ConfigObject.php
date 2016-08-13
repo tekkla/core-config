@@ -11,37 +11,79 @@ namespace Core\Config;
 class ConfigObject
 {
 
+    /**
+     *
+     * @var string
+     */
     public $storage;
 
+    /**
+     *
+     * @var string
+     */
     public $id;
 
+    /**
+     *
+     * @var mixed
+     */
     public $value;
 
-    public function setStorage($storage)
+    /**
+     * Sets storage name
+     *
+     * @param string $storage
+     */
+    public function setStorage(string $storage)
     {
         $this->storage = $storage;
     }
 
-    public function getStorage()
+    /**
+     * Returns set storage name
+     *
+     * @return string
+     */
+    public function getStorage(): string
     {
         return $this->storage;
     }
 
-    public function setId($id)
+    /**
+     * Set config id (key)
+     *
+     * @param string $id
+     */
+    public function setId(string $id)
     {
         $this->id = $id;
     }
 
-    public function getId()
+    /**
+     * Returns set config id (key)
+     *
+     * @return string
+     */
+    public function getId(): string
     {
         return $this->id;
     }
 
+    /**
+     * Set config value
+     *
+     * @param mixed $value
+     */
     public function setValue($value)
     {
         $this->value = $value;
     }
 
+    /**
+     * Returns set config value
+     *
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->value;
