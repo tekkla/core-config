@@ -52,13 +52,12 @@ class ConfigStorage extends Storage
         return $this->name;
     }
 
-    /**
-     *
-     * {@inheritdoc}
-     *
-     * @see \Core\Storage\AbstractStorage::getValue()
-     */
-    public function getValue($key)
+/**
+ * 
+ * {@inheritDoc}
+ * @see \Core\Storage\AbstractStorage::getValue()
+ */
+    public function getValue(string $key)
     {
         if (array_key_exists($key, $this->data)) {
             return $this->data[$key];

@@ -5,7 +5,7 @@ namespace Core\Config\Repository;
  * FileRepository.php
  *
  * @author Michael "Tekkla" Zorn <tekkla@tekkla.de>
- * @copyright 2016
+ * @copyright 2016-2017
  * @license MIT
  */
 class FileRepository implements RepositoryInterface
@@ -34,7 +34,7 @@ class FileRepository implements RepositoryInterface
     /**
      * (non-PHPdoc)
      *
-     * @see \Core\Config\ConfigRepositoryInterface::read()
+     * @see RepositoryInterface::read()
      *
      */
     public function read()
@@ -57,7 +57,7 @@ class FileRepository implements RepositoryInterface
     /**
      * (non-PHPdoc)
      *
-     * @see \Core\Config\ConfigRepositoryInterface::write()
+     * @see RepositoryInterface::write()
      *
      */
     public function write($data)

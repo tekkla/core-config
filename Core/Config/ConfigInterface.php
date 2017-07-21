@@ -5,7 +5,7 @@ namespace Core\Config;
  * ConfigInterface.php
  *
  * @author Michael "Tekkla" Zorn <tekkla@tekkla.de>
- * @copyright 2016
+ * @copyright 2016-2017
  * @license MIT
  */
 interface ConfigInterface
@@ -18,9 +18,8 @@ interface ConfigInterface
      *            The name of the storage to query
      * @param string $key
      *            The key we are looking for in the storage
-     *
+     *            
      * @return string
      */
     public function get(string $storage_name, string $key);
 }
-
